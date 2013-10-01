@@ -19,7 +19,7 @@ func Geoi(tri_height_m float64, max_tri_n uint) *GeoiType {
 	return g
 }
 
-func (g *GeoiType) MaxCoors() uint {
+func (g *GeoiType) MaxCoord() uint {
 	return g.max_coord
 }
 
