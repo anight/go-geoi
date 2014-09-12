@@ -35,7 +35,7 @@ func (g *GeoiType) Cs2ll(tri2_id uint, c [3]uint32, sw uint) *[2]float64 {
 	return &ll
 }
 
-func (g *GeoiType) TriCoords(tri2_id uint, ll [2]float64) *[3]uint32 {
+func (g *GeoiType) TriCoords(tri2_id uint, ll *[2]float64) *[3]uint32 {
 	var c [3]uint32
 	res := C.geoi_tri_coords(g.geoi, C.uint(tri2_id), C.double(ll[0]), C.double(ll[1]), (*_Ctype_uint)(unsafe.Pointer(&c[0])))
 	if uint(res) != 1 {
@@ -55,3 +55,11 @@ func (g *GeoiType) Triangles(tri2_data uint, offset uint) []uint32 {
 	C.geoi_triangles(g.geoi, C.uint(tri2_data), C.uint(offset), &res)
 	return t[:res.used]
 }
+
+func (g *GeoiType) SearchCenter(ll *[2]float64) (uint, *[3]uint32) {
+	var c [3]uint32
+	var tri_id C.uint
+	C.geoi_locate_search_center(g.geoi, C.double(ll[0]), C.double(ll[1]), &tri_id, (*_Ctype_uint)(unsafe.Pointer(&c[0])))
+	return uint(tri_id), &c
+}
+
